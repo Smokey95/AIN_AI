@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedList;
 
-public class AlphaBetaPruning {
+public class AlphaBetaPruningHeuristic {
   private static int callCounter = 0;
   
   public static KalahBoard alphaBetaSearch(KalahBoard board, int maxDepth){
@@ -19,7 +19,7 @@ public class AlphaBetaPruning {
 		if(checkOnFinished(board, maxDepth))
 			return board;
 		
-		for(KalahBoard poss_action : board.possibleActions()){
+		for(KalahBoard poss_action : heuristic(board)){
 			
       int tmp_max_count = curr_max_count;
        
@@ -46,7 +46,7 @@ public class AlphaBetaPruning {
 		
 		int curr_max_val = Integer.MAX_VALUE;
 		
-		for(KalahBoard poss_action : board.possibleActions()){
+		for(KalahBoard poss_action : heuristic(board)){
       if(poss_action.isBonus())
         curr_max_val = Integer.min(curr_max_val, minValue(poss_action, maxDepth - 1, alpha, beta));
       else
@@ -70,7 +70,7 @@ public class AlphaBetaPruning {
 		
 		int curr_min_val = Integer.MIN_VALUE;
 		
-		for(KalahBoard poss_action : board.possibleActions()){
+		for(KalahBoard poss_action : heuristic(board)){
       if(poss_action.isBonus())
         curr_min_val = Integer.max(curr_min_val, maxValue(poss_action, maxDepth - 1, alpha, beta));
       else
@@ -102,5 +102,23 @@ public class AlphaBetaPruning {
   
   public static int getCallCounter(){
     return callCounter;
-  } 
+  }
+  
+  
+  /**
+   * Simple Heuristik für die Reihenfolge der möglichen Züge:
+   * Bonuszüge werden vor den normalen Zügen ausgeführt!
+   */
+  public static List<KalahBoard> heuristic(KalahBoard board){
+    List<KalahBoard> list = new LinkedList<>();
+    
+    for(KalahBoard poss_action : board.possibleActions()){
+      if(poss_action.isBonus())
+        list.add(0, poss_action);
+      else
+        list.add(poss_action);
+    }
+    
+    return list;
+  }
 }

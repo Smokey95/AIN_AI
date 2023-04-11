@@ -8,31 +8,31 @@ import java.util.LinkedList;
  * Class MinMax for min-max search required for first task
  * @author Smokey95
  */
-public class MinMax {
+public class MiniMax {
   
   private static int callCounter = 0;
   
   public static KalahBoard maxActions(KalahBoard board, int maxDepth){
 		
 		KalahBoard action       = null;
-    int v                   = Integer.MIN_VALUE;
+    int curr_max_count      = Integer.MIN_VALUE;
     
     callCounter = 0;
 		
 		if(checkOnFinished(board, maxDepth))
 			return board;
 		
-		for(KalahBoard a : board.possibleActions()){
+		for(KalahBoard poss_action : board.possibleActions()){
 			
-      int v1 = v;
+      int tmp_max_count = curr_max_count;
        
-      if(a.isBonus())
-        v = Integer.max(v, maxValue(a, maxDepth - 1));
+      if(poss_action.isBonus())
+        curr_max_count = Integer.max(curr_max_count, maxValue(poss_action, maxDepth - 1));
       else
-        v = Integer.max(v, minValue(a, maxDepth - 1));
+        curr_max_count = Integer.max(curr_max_count, minValue(poss_action, maxDepth - 1));
 			
-			if(v1 != v)
-        action = a;
+			if(tmp_max_count != curr_max_count)
+        action = poss_action;
 		}
 
 		return action;
@@ -47,11 +47,11 @@ public class MinMax {
 		
 		int curr_max_val = Integer.MAX_VALUE;
 		
-		for(KalahBoard curr_board : board.possibleActions()){
-      if(curr_board.isBonus())
-        curr_max_val = Integer.min(curr_max_val, minValue(curr_board, maxDepth - 1));
+		for(KalahBoard poss_action : board.possibleActions()){
+      if(poss_action.isBonus())
+        curr_max_val = Integer.min(curr_max_val, minValue(poss_action, maxDepth - 1));
       else
-        curr_max_val = Integer.min(curr_max_val, maxValue(curr_board, maxDepth - 1));
+        curr_max_val = Integer.min(curr_max_val, maxValue(poss_action, maxDepth - 1));
 		}
 		
 		return curr_max_val;
@@ -66,11 +66,11 @@ public class MinMax {
 		
 		int curr_min_val = Integer.MIN_VALUE;
 		
-		for(KalahBoard a : board.possibleActions()){
-      if(a.isBonus())
-        curr_min_val = Integer.max(curr_min_val, maxValue(a, maxDepth - 1));
+		for(KalahBoard poss_action : board.possibleActions()){
+      if(poss_action.isBonus())
+        curr_min_val = Integer.max(curr_min_val, maxValue(poss_action, maxDepth - 1));
       else
-        curr_min_val = Integer.max(curr_min_val, minValue(a, maxDepth - 1));
+        curr_min_val = Integer.max(curr_min_val, minValue(poss_action, maxDepth - 1));
 		}
 		
 		return curr_min_val;

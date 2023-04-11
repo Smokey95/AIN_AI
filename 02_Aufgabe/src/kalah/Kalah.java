@@ -17,7 +17,11 @@ public class Kalah {
 		//testExample();
 		//testHHGame();
 		//testHumanMinMaxGame();
-		testMiniMaxAndAlphaBetaWithGivenBoard();
+		//testMiniMaxWithGivenBoard();
+		//testAlphaBetaWithGivenBoard();
+		testAlphaBetaHeuristicWithGivenBoard();
+		//testHAGame();
+		//testAAGame();
 	}
 	
 	/**
@@ -52,29 +56,84 @@ public class Kalah {
 		System.out.println("\n" + ANSI_BLUE + "GAME OVER");
 	}
 	
+	
 	/**
-	 * KI gegen Mensch
+	 * Mensch gegen KI
 	 */
-	public static void testHumanMinMaxGame() {
+	public static void testHAGame(){
 		
-		KalahBoard kalahBd = new KalahBoard(new int[]{2, 0, 4, 3, 2, 0, 0, 1, 0, 1, 3, 2, 1, 0}, 'A');
-		//kalahBd.setAI();
-		
-		//KalahBoard kalahBd = new KalahBoard(true);
-		
+		KalahBoard kalahBd = new KalahBoard();
 		kalahBd.print();
 
 		while (!kalahBd.isFinished()) {
-			int action = kalahBd.readAction();
-			kalahBd.move(action);
-			kalahBd.print();
+			
+			if (kalahBd.getCurPlayer() == 'A') {
+				System.out.println("AI ist am Zug...");
+				KalahBoard best_action = AlphaBetaPruningHeuristic.alphaBetaSearch(kalahBd, 16);
+				int action_index = best_action.getLastPlay();
+				System.out.println("Best action: %2d".formatted(action_index) + "  [Anzahl Aufrufe: " + AlphaBetaPruningHeuristic.getCallCounter() + "]");
+				kalahBd.move(action_index);
+				kalahBd.print();
+			} else {
+				int action = kalahBd.readAction();
+				kalahBd.move(action);
+				kalahBd.print();
+			}
+			
+			try {
+				Thread.sleep(1000);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
-
-		System.out.println("\n" + ANSI_BLUE + "GAME OVER");
 	}
 	
 	
-	public static void testMiniMaxAndAlphaBetaWithGivenBoard() {
+	/**
+	 * KI gegen KI
+	 */
+	public static void testAAGame(){
+		
+		KalahBoard kalahBd = new KalahBoard();
+		kalahBd.print();
+
+		while (!kalahBd.isFinished()) {
+			
+			if (kalahBd.getCurPlayer() == 'A') {
+				System.out.println("AI A ist am Zug...");
+				try{
+					Thread.sleep(300);
+				} catch (Exception e) {
+				}
+				KalahBoard best_action = AlphaBetaPruningHeuristic.alphaBetaSearch(kalahBd, 12);
+				int action_index = best_action.getLastPlay();
+				System.out.println("Best action: %2d".formatted(action_index) + "  [Anzahl Aufrufe: " + AlphaBetaPruningHeuristic.getCallCounter() + "]");
+				kalahBd.move(action_index);
+				kalahBd.print();
+			} else {
+				System.out.println("AI B ist am Zug...");
+				try{
+					Thread.sleep(300);
+				} catch (Exception e) {
+				}
+				KalahBoard best_action = MiniMax.maxActions(kalahBd, 8);
+				int action_index = best_action.getLastPlay();
+				System.out.println("Best action: %2d".formatted(action_index) + "  [Anzahl Aufrufe: " + MiniMax.getCallCounter() + "]");
+				kalahBd.move(action_index);
+				kalahBd.print();
+			}
+			
+			try {
+				Thread.sleep(500);
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	/**
+	 * Testmethode für den Minimax-Algorithmus
+	 */
+	public static void testMiniMaxWithGivenBoard() {
 		
 		KalahBoard kalahBd = new KalahBoard(new int[]{2, 0, 4, 3, 2, 0, 0, 1, 0, 1, 3, 2, 1, 0}, 'A');
 		// A ist am Zug und kann aufgrund von Bonuszügen 8-aml hintereinander ziehen!
@@ -84,9 +143,55 @@ public class Kalah {
 		while (!kalahBd.isFinished()) {
 				int action;
 				if (kalahBd.getCurPlayer() == 'A') {
-						KalahBoard best_action = MinMax.maxActions(kalahBd, 13);
+						KalahBoard best_action = MiniMax.maxActions(kalahBd, 12);
 						int action_index = best_action.getLastPlay();
-						System.out.println("Best action: %2d".formatted(action_index) + "  [Anzahl Aufrufe: " + MinMax.getCallCounter() + "]");
+						System.out.println("Best action: %2d".formatted(action_index) + "  [Anzahl Aufrufe: " + MiniMax.getCallCounter() + "]");
+				}
+				action = kalahBd.readAction();
+				kalahBd.move(action);
+				kalahBd.print();
+		}
+
+		System.out.println("\n" + ANSI_BLUE + "GAME OVER");
+	}
+	
+	
+	public static void testAlphaBetaWithGivenBoard() {
+		
+		KalahBoard kalahBd = new KalahBoard(new int[]{2, 0, 4, 3, 2, 0, 0, 1, 0, 1, 3, 2, 1, 0}, 'A');
+		// A ist am Zug und kann aufgrund von Bonuszügen 8-aml hintereinander ziehen!
+		// A muss deutlich gewinnen!
+		kalahBd.print();
+
+		while (!kalahBd.isFinished()) {
+				int action;
+				if (kalahBd.getCurPlayer() == 'A') {
+						KalahBoard best_action = AlphaBetaPruning.alphaBetaSearch(kalahBd, 16);
+						int action_index = best_action.getLastPlay();
+						System.out.println("Best action: %2d".formatted(action_index) + "  [Anzahl Aufrufe: " + AlphaBetaPruning.getCallCounter() + "]");
+				}
+				action = kalahBd.readAction();
+				kalahBd.move(action);
+				kalahBd.print();
+		}
+
+		System.out.println("\n" + ANSI_BLUE + "GAME OVER");
+	}
+	
+	
+	public static void testAlphaBetaHeuristicWithGivenBoard() {
+		
+		KalahBoard kalahBd = new KalahBoard(new int[]{2, 0, 4, 3, 2, 0, 0, 1, 0, 1, 3, 2, 1, 0}, 'A');
+		// A ist am Zug und kann aufgrund von Bonuszügen 8-aml hintereinander ziehen!
+		// A muss deutlich gewinnen!
+		kalahBd.print();
+
+		while (!kalahBd.isFinished()) {
+				int action;
+				if (kalahBd.getCurPlayer() == 'A') {
+						KalahBoard best_action = AlphaBetaPruningHeuristic.alphaBetaSearch(kalahBd, 16);
+						int action_index = best_action.getLastPlay();
+						System.out.println("Best action: %2d".formatted(action_index) + "  [Anzahl Aufrufe: " + AlphaBetaPruningHeuristic.getCallCounter() + "]");
 				}
 				action = kalahBd.readAction();
 				kalahBd.move(action);
