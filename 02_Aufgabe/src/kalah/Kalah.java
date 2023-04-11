@@ -19,9 +19,9 @@ public class Kalah {
 		//testHumanMinMaxGame();
 		//testMiniMaxWithGivenBoard();
 		//testAlphaBetaWithGivenBoard();
-		//testAlphaBetaHeuristicWithGivenBoard();
+		testAlphaBetaHeuristicWithGivenBoard();
 		//testHAGame();
-		testAAGame();
+		//testAAGame();
 	}
 	
 	/**
@@ -143,7 +143,7 @@ public class Kalah {
 		while (!kalahBd.isFinished()) {
 				int action;
 				if (kalahBd.getCurPlayer() == 'A') {
-						KalahBoard best_action = MiniMax.maxActions(kalahBd, 16);
+						KalahBoard best_action = MiniMax.maxActions(kalahBd, 12);
 						int action_index = best_action.getLastPlay();
 						System.out.println("Best action: %2d".formatted(action_index) + "  [Anzahl Aufrufe: " + MiniMax.getCallCounter() + "]");
 				}
