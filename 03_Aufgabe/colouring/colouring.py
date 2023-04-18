@@ -29,6 +29,7 @@
 #
 
 from constraint import Problem, AllDifferentConstraint
+#import geopandas as gpd
 
 def solve(limit):
     
@@ -48,8 +49,8 @@ def solve(limit):
               "Sachsen", 
               "Sachsen-Anhalt", 
               "Schleswig-Holstein", 
-              "Thüringen"]
-    # Why is Mallorca missing?
+              "Thüringen",
+              "Mallorca"]
     
     problem = Problem()
     
@@ -59,52 +60,89 @@ def solve(limit):
     # define the constraints
     
     # Hint 1
-    problem.addConstraint(AllDifferentConstraint(), ["Baden-Württemberg", "Hessen", "Bayern", "Rheinland-Pfalz"])
+    problem.addConstraint(
+        lambda state_bw, state_h, state_b, state_rp: state_bw != state_h and state_bw != state_b and state_bw != state_rp, 
+        ("Baden-Württemberg", "Hessen", "Bayern", "Rheinland-Pfalz"))
     
     # Hint 2
-    problem.addConstraint(AllDifferentConstraint(), ["Bayern", "Baden-Württemberg", "Hessen", "Thüringen", "Sachsen"])
+    problem.addConstraint(
+        lambda state_b, state_bw, state_h, state_th, state_s: state_b != state_bw and state_b != state_h and state_b != state_th and state_b != state_s, 
+        ("Bayern", "Baden-Württemberg", "Hessen", "Thüringen", "Sachsen"))
     
     # Hint 3
-    problem.addConstraint(AllDifferentConstraint(), ["Berlin", "Brandenburg"])
+    problem.addConstraint(
+        lambda state_b, state_br: state_b != state_br,
+        ("Berlin", "Brandenburg"))
     
     # Hint 4
-    problem.addConstraint(AllDifferentConstraint(), ["Brandenburg", "Berlin", "Mecklenburg-Vorpommern", "Niedersachsen", "Sachsen-Anhalt", "Sachsen"])
+    problem.addConstraint(
+        lambda state_b, state_br, state_m, state_n, state_sa, state_s: state_b != state_br and state_b != state_m and state_b != state_n and state_b != state_sa and state_b != state_s,
+        ("Brandenburg", "Berlin", "Mecklenburg-Vorpommern", "Niedersachsen", "Sachsen-Anhalt", "Sachsen"))
     
     # Hint 5
-    problem.addConstraint(AllDifferentConstraint(), ["Bremen", "Niedersachsen"])
+    problem.addConstraint(
+        lambda state_b, state_n: state_b != state_n,
+        ("Bremen", "Niedersachsen"))
     
     # Hint 6
-    problem.addConstraint(AllDifferentConstraint(), ["Hamburg", "Niedersachsen", "Schleswig-Holstein"])
+    problem.addConstraint(
+        lambda state_h, state_n, state_sh: state_h != state_n and state_h != state_sh,
+        ("Hamburg", "Niedersachsen", "Schleswig-Holstein"))
     
     # Hint 7
-    problem.addConstraint(AllDifferentConstraint(), ["Hessen", "Baden-Württemberg", "Bayern", "Rheinland-Pfalz", "Nordrhein-Westfalen", "Thüringen", "Niedersachsen"])
+    problem.addConstraint(
+        lambda state_h, state_bw, state_b, state_rp, state_nr, state_th, state_n: state_h != state_bw and state_h != state_b and state_h != state_rp and state_h != state_nr and state_h != state_th and state_h != state_n,
+        ("Hessen", "Baden-Württemberg", "Bayern", "Rheinland-Pfalz", "Nordrhein-Westfalen", "Thüringen", "Niedersachsen"))
     
     # Hint 8
-    problem.addConstraint(AllDifferentConstraint(), ["Mecklenburg-Vorpommern", "Brandenburg", "Niedersachsen", "Schleswig-Holstein"])
+    problem.addConstraint(
+        lambda state_m, state_br, state_n, state_sh: state_m != state_br and state_m != state_n and state_m != state_sh,
+        ("Mecklenburg-Vorpommern", "Brandenburg", "Niedersachsen", "Schleswig-Holstein"))
     
     # Hint 9
-    problem.addConstraint(AllDifferentConstraint(), ["Niedersachsen", "Bremen", "Hamburg", "Nordrhein-Westfalen", "Mecklenburg-Vorpommern", "Sachsen-Anhalt", "Schleswig-Holstein", "Thüringen", "Hessen"])
+    problem.addConstraint(
+        lambda state_n, state_b, state_h, state_nr, state_m, state_sa, state_sh, state_th, state_hs: state_n != state_b and state_n != state_h and state_n != state_nr and state_n != state_m and state_n != state_sa and state_n != state_sh and state_n != state_th and state_n != state_hs,
+        ("Niedersachsen", "Bremen", "Hamburg", "Nordrhein-Westfalen", "Mecklenburg-Vorpommern", "Sachsen-Anhalt", "Schleswig-Holstein", "Thüringen", "Hessen"))
     
     # Hint 10
-    problem.addConstraint(AllDifferentConstraint(), ["Nordrhein-Westfalen", "Hessen", "Niedersachsen", "Rheinland-Pfalz"])
+    problem.addConstraint(
+        lambda state_nr, state_h, state_n, state_rp: state_nr != state_h and state_nr != state_n and state_nr != state_rp,
+        ("Nordrhein-Westfalen", "Hessen", "Niedersachsen", "Rheinland-Pfalz"))
     
     # Hint 11
-    problem.addConstraint(AllDifferentConstraint(), ["Rheinland-Pfalz", "Baden-Württemberg", "Hessen", "Nordrhein-Westfalen", "Saarland"])
+    problem.addConstraint(
+        lambda state_rp, state_bw, state_h, state_nr, state_sa: state_rp != state_bw and state_rp != state_h and state_rp != state_nr and state_rp != state_sa,
+        ("Rheinland-Pfalz", "Baden-Württemberg", "Hessen", "Nordrhein-Westfalen", "Saarland"))
     
     # Hint 12
-    problem.addConstraint(AllDifferentConstraint(), ["Saarland", "Rheinland-Pfalz"])
+    problem.addConstraint(
+        lambda state_sa, state_rp: state_sa != state_rp,
+        ("Saarland", "Rheinland-Pfalz"))
     
     # Hint 13
-    problem.addConstraint(AllDifferentConstraint(), ["Sachsen", "Bayern", "Thüringen", "Sachsen-Anhalt", "Brandenburg"])
+    problem.addConstraint(
+        lambda state_s, state_b, state_th, state_sa, state_br: state_s != state_b and state_s != state_th and state_s != state_sa and state_s != state_br,
+        ("Sachsen", "Bayern", "Thüringen", "Saarland", "Brandenburg"))
     
     # Hint 14
-    problem.addConstraint(AllDifferentConstraint(), ["Sachsen-Anhalt", "Sachsen", "Thüringen", "Niedersachsen", "Brandenburg"])
+    problem.addConstraint(
+        lambda state_sa, state_n, state_th, state_s: state_sa != state_n and state_sa != state_th and state_sa != state_s,
+        ("Sachsen-Anhalt", "Niedersachsen", "Thüringen", "Sachsen"))
     
     # Hint 15
-    problem.addConstraint(AllDifferentConstraint(), ["Schleswig-Holstein", "Hamburg", "Mecklenburg-Vorpommern", "Niedersachsen"])
+    problem.addConstraint(
+        lambda state_sh, state_h, state_n, state_m: state_sh != state_h and state_sh != state_n and state_sh != state_m,
+        ("Schleswig-Holstein", "Hamburg", "Niedersachsen", "Mecklenburg-Vorpommern"))
     
     # Hint 16
-    problem.addConstraint(AllDifferentConstraint(), ["Thüringen", "Sachsen", "Sachsen-Anhalt", "Niedersachsen", "Hessen", "Bayern"])
+    problem.addConstraint(
+        lambda state_th, state_b, state_h, state_n, state_s, state_sa: state_th != state_b and state_th != state_h and state_th != state_n and state_th != state_s and state_th != state_sa,
+        ("Thüringen", "Bayern", "Hessen", "Niedersachsen", "Sachsen", "Sachsen-Anhalt"))
+    
+    # Hint 17
+    problem.addConstraint(
+        lambda state_malle, state_b: state_malle != state_b,
+        ("Mallorca", "Berlin"))
     
     solution = problem.getSolution()
     return solution
@@ -115,8 +153,16 @@ def showSolution(solution):
         print(state + ": " + str(solution[state]))
     
 def main():
-    range = 8
-    showSolution(solve(range))
+    
+    print('Enter color count:')
+    range = int(input())
+    
+    try:
+        solution = solve(range)
+        showSolution(solution)
+    except Exception as e:
+        print("ERROR: Not solvable with only " + str(range) + " colors.")
+    
     
 if __name__ == "__main__":
     main()
