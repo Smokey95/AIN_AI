@@ -2,7 +2,7 @@
 #
 # There are no tricks, just pure logic, so good luck and don't give up.
 #
-# 1. In a there are four rooms, four people and four subjects.
+# 1. There are four rooms, four people and four subjects.
 # 2. In each room only one person teaches exactly one subject
 #
 # THE QUESTION: Who teaches where and what?
