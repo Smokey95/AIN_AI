@@ -29,7 +29,8 @@
 #
 
 from constraint import Problem, AllDifferentConstraint
-#import geopandas as gpd
+import geopandas as gpd
+import matplotlib.pyplot as plt
 
 def solve(limit):
     
@@ -149,8 +150,15 @@ def solve(limit):
     
 def showSolution(solution):
     print("Solution:")
+    
+    german_map = gpd.read_file("data/DEU_adm1.shp")
+    
     for state in solution:
         print(state + ": " + str(solution[state]))
+        german_map.loc[german_map.NAME_1 == state, 'color'] = solution[state]
+    
+    german_map.plot(column='color', cmap='plasma')
+    plt.show()
     
 def main():
     

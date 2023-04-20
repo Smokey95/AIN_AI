@@ -81,3 +81,28 @@ Für unser Lehrerbeispiel wäre das also:
     problem.addConstraint(lambda lehrer1: lehrer1 != 1, ["Herr Müller"])
     
 Das oben gezeigte Beispiel heißt, dass *Herr Müller nicht im Raum 1 unterrichten darf*.
+
+<br>
+
+## Color Map
+
+Die Color Map Aufgabe benötigt zusätzlich zur `python-constraint` libary auch noch die Libary `geopandas` sowie `matplotlib` sowie ShapeDaten von Deutschland.
+
+Die zusätzlichen Librarys lassen sich wie folgt installieren:
+
+    pip install pandas geopandas matplotlib
+    
+Zusätzlich werden noch Kartendaten benötigt die unter derm folgenden Link als `.zip`Datei heruntergeladen werden können.
+
+    "https://biogeo.ucdavis.edu/data/diva/adm/DEU_adm.zip"
+    
+> **Hinweis:** Damit das Programm funktioniert muss der Inhalt des zip order in einen Unterordner `data` innerhalb des `03_Aufgabe\colouring` Ordners kopiert werden. Die Struktur sollte:
+
+    03_Aufgabe
+    └── colouring
+        └── data
+            ├── DEU_adm2.shx
+            └── ...
+        └── colouring.py
+
+    
