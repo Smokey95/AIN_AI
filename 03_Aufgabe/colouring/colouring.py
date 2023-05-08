@@ -145,11 +145,12 @@ def solve(limit):
         lambda state_malle, state_b: state_malle != state_b,
         ("Mallorca", "Berlin"))
     
-    solution = problem.getSolution()
+    solution = problem.getSolutions()
     return solution
     
 def showSolution(solution):
     print("Solution:")
+    #print("Solution: " + len(solution))
     
     german_map = gpd.read_file("data/DEU_adm1.shp")
     
@@ -160,6 +161,7 @@ def showSolution(solution):
     german_map.plot(column='color', cmap='plasma')
     plt.show()
     
+    
 def main():
     
     print('Enter color count:')
@@ -167,10 +169,11 @@ def main():
     
     try:
         solution = solve(range)
+        print(len(solution))
         showSolution(solution)
     except Exception as e:
         print("ERROR: Not solvable with only " + str(range) + " colors.")
-    
+
     
 if __name__ == "__main__":
     main()
